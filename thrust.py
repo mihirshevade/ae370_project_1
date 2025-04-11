@@ -8,14 +8,11 @@ motors = {}
 motor_files = glob.glob("motors/*.csv")
 for file in motor_files:
     try:
-        # Normalize motor name (remove .csv and any path info/extra spaces)
         name = file.split("/")[-1].replace(".csv", "").strip()
 
-        # Read and clean column headers
         df = pd.read_csv(file)
-        df.columns = [col.strip() for col in df.columns]  # clean header names
+        df.columns = [col.strip() for col in df.columns]
 
-        # Assume the first two columns are time and thrust
         time_col = df.columns[0]
         thrust_col = df.columns[1]
 

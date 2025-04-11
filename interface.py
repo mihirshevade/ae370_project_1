@@ -14,7 +14,6 @@ def run_interface():
         value=list(motors.keys())[0] if motors else None,
         description='Motor:'
     )
-    rail_length_text = widgets.FloatText(value=1.5, description='Rail Length (m):')
     wind_text = widgets.FloatText(value=0.0, description='Wind (m/s):')
     diameter_text = widgets.FloatText(value=98, description='Diameter (mm):')
     Cd_text = widgets.FloatText(value=0.75, description='Cd:')
@@ -39,7 +38,6 @@ def run_interface():
 
             print(f"Running simulation with {motor_dropdown.value}...")
 
-            # Pre-rail simulation
             state = np.array([0.0, 0.0, 0.0, 0.0, rocket_params['dry_mass'] + rocket_params['propellant_mass']])
             t = 0
             rocket_params['launch_angle'] = 0
@@ -52,7 +50,7 @@ def run_interface():
     run_button.on_click(on_run_button_clicked)
 
     ui = VBox([
-        HBox([motor_dropdown, rail_length_text, wind_text]),
+        HBox([motor_dropdown, wind_text]),
         HBox([diameter_text, Cd_text, dry_mass_text, propellant_mass_text]),
         run_button,
         out

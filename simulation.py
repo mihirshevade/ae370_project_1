@@ -4,7 +4,7 @@ from dynamics import dynamics, rk4_step
 
 g = 9.80665
 
-def run_simulation(motor, rocket_params, sim_params, dt=0.01):
+def run_simulation(motor, rocket_params, sim_params, dt=0.01, verbose=True):
 
     initial_mass = rocket_params['dry_mass'] + rocket_params['propellant_mass']
     state = np.array([0.0, 0.0, rocket_params['v0_x'], rocket_params['v0_y'], initial_mass])
@@ -71,22 +71,23 @@ def run_simulation(motor, rocket_params, sim_params, dt=0.01):
     for key in results:
         results[key] = np.array(results[key])
 
-    print("\n--- Flight Statistics ---")
-    apogee = np.max(results['y'])
-    time_to_apogee = results['time'][np.argmax(results['y'])]
-    max_q = np.max(results['dynamic_pressure'])
-    max_speed = np.max(np.sqrt(results['vx']**2 + results['vy']**2))
-    max_mach = np.max(results['mach'])
-    max_accel = np.max(results['acceleration'])
-    max_stag_temp = np.max(results['stag_temp'])
+    if verbose:
+        print("\n--- Flight Statistics ---")
+        apogee = np.max(results['y'])
+        time_to_apogee = results['time'][np.argmax(results['y'])]
+        max_q = np.max(results['dynamic_pressure'])
+        max_speed = np.max(np.sqrt(results['vx']**2 + results['vy']**2))
+        max_mach = np.max(results['mach'])
+        max_accel = np.max(results['acceleration'])
+        max_stag_temp = np.max(results['stag_temp'])
 
-    print(f"Apogee: {apogee:.2f} m")
-    print(f"Time to Apogee: {time_to_apogee:.2f} s")
-    print(f"Impact Time: {results['time'][-1]:.2f} s")
-    print(f"Max Acceleration: {max_accel:.2f} m/s²")
-    print(f"Max Q (dynamic pressure): {max_q:.2f} Pa")
-    print(f"Max Speed: {max_speed:.2f} m/s")
-    print(f"Max Mach Number: {max_mach:.2f}")
-    print(f"Max Stage Temperature: {max_stag_temp:.2f} K")
+        print(f"Apogee: {apogee:.2f} m")
+        print(f"Time to Apogee: {time_to_apogee:.2f} s")
+        print(f"Impact Time: {results['time'][-1]:.2f} s")
+        print(f"Max Acceleration: {max_accel:.2f} m/s²")
+        print(f"Max Q (dynamic pressure): {max_q:.2f} Pa")
+        print(f"Max Speed: {max_speed:.2f} m/s")
+        print(f"Max Mach Number: {max_mach:.2f}")
+        print(f"Max Stage Temperature: {max_stag_temp:.2f} K")
 
     return results
